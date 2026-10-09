@@ -1,0 +1,17 @@
+name: build exe
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests beautifulsoup4 pyinstaller
+      - run: pyinstaller --onefile --name gateway_scout --console --clean --noconfirm gateway_scout.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gateway_scout
+          path: dist/gateway_scout.exe
